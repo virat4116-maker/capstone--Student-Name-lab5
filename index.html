@@ -1,0 +1,1551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaVoyage · Travel Agency</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* Root defaults & design tokens */
+    :root {
+      --color-bg: #020617;
+      --color-bg-elevated: #03091f;
+      --color-surface: #0b1120;
+      --color-surface-soft: #020617;
+      --color-border: #1e293b;
+      --color-accent: #22d3ee;
+      --color-accent-soft: rgba(34, 211, 238, 0.16);
+      --color-accent-strong: #a855f7;
+      --color-text: #e5e7eb;
+      --color-text-muted: #9ca3af;
+      --color-error: #fb7185;
+
+      --font-sans: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      --font-display: "Space Grotesk", system-ui, sans-serif;
+
+      --radius-lg: 1.25rem;
+      --radius-full: 999px;
+
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --shadow-subtle: 0 12px 35px rgba(15, 23, 42, 0.7);
+
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 0.75rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 2.5rem;
+      --spacing-xl: 4rem;
+
+      --transition-base: all 0.25s ease;
+
+      font-size: 16px;
+    }
+
+    /* Global reset */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 55%),
+        radial-gradient(circle at 70% 10%, rgba(129, 140, 248, 0.18), transparent 55%),
+        radial-gradient(circle at bottom, rgba(244, 114, 182, 0.1), #020617);
+      line-height: 1.6;
+    }
+
+    /* Typography basics */
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0 0 0.5em;
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 0.75em;
+    }
+
+    ul {
+      margin: 0 0 1em;
+      padding-left: 1.25em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Layout helpers */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      padding: 0 1.5rem;
+      margin: 0 auto;
+    }
+
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0.75rem;
+      background: #020617;
+      color: var(--color-accent);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      z-index: 999;
+      border: 1px solid var(--color-accent);
+    }
+
+    .skip-link:focus {
+      left: 1rem;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(24px);
+      background: linear-gradient(to bottom,
+          rgba(2, 6, 23, 0.98),
+          rgba(2, 6, 23, 0.85),
+          transparent);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0.25rem;
+      gap: 1.5rem;
+    }
+
+    /* Branding */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: var(--radius-full);
+      background: radial-gradient(circle at 20% 0, #22d3ee, #4f46e5);
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.7);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .brand-tagline {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Nav */
+    .main-nav .nav-list {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .main-nav a {
+      position: relative;
+      padding: 0.35rem 0;
+      color: var(--color-text-muted);
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.15rem;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #85c5cf, #a855f7);
+      transition: var(--transition-base);
+    }
+
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      color: var(--color-text);
+    }
+
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
+      width: 100%;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 1.4rem;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-base);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22d3ee, #a855f7);
+      color: #0b1120;
+      box-shadow: 0 15px 35px rgba(56, 189, 248, 0.6);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      transform: translateY(-1px) translateZ(0);
+      box-shadow: 0 18px 45px rgba(129, 140, 248, 0.85);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.6);
+      color: var(--color-text);
+    }
+
+    .btn-ghost:hover,
+    .btn-ghost:focus-visible {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
+    .btn-outline {
+      padding-inline: 1rem;
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.6);
+      font-size: 0.8rem;
+      color: var(--color-text);
+    }
+
+    .btn-outline:hover,
+    .btn-outline:focus-visible {
+      border-color: var(--color-accent);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-small {
+      padding: 0.55rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* HERO + BACKGROUND VIDEO */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 3.5rem 0 4.5rem;
+    }
+
+    /* Video container */
+    .hero-video-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .hero-video-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Dark overlay for contrast */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.75);
+      z-index: -1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 3vw + 1rem, 3.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      animation: heroFadeUp 0.8s ease-out both;
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(135deg, #22d3ee, #a855f7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      max-width: 30rem;
+      color: var(--color-text-muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-stats li {
+      padding: 0.75rem 1.1rem;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(30, 64, 175, 0.85);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.8);
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Hero highlight card */
+    .hero-highlight {
+      animation: heroFadeUp 0.9s ease-out both;
+    }
+
+    .destination-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.6));
+      border-radius: 1.4rem;
+      padding: 0.85rem;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .destination-image-wrapper {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    .destination-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 0.45s ease;
+    }
+
+    .destination-card:hover .destination-image {
+      transform: scale(1.07);
+    }
+
+    .destination-badge {
+      position: absolute;
+      top: 0.7rem;
+      left: 0.7rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      background: rgba(8, 47, 73, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      color: var(--color-text);
+    }
+
+    .destination-info {
+      padding: 0.9rem 0.5rem 0.3rem;
+    }
+
+    .destination-title {
+      font-size: 1.15rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .destination-meta {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .destination-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    .destination-features li::before {
+      content: "• ";
+      color: var(--color-accent);
+    }
+
+    /* Sections */
+    .section {
+      padding: 3.5rem 0;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+    }
+
+    .section-header p {
+      color: var(--color-text-muted);
+      max-width: 32rem;
+    }
+
+    /* Packages layout */
+    .section-packages {
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.6));
+    }
+
+    .packages-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 2.2fr);
+      gap: 2.5rem;
+    }
+
+    /* Filters sidebar */
+    .filters {
+      background: var(--color-bg-elevated);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 1px solid rgba(30, 64, 175, 0.7);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .filters-title {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .filters-form {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .filters fieldset {
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      border-radius: 0.85rem;
+      padding: 0.8rem 0.9rem;
+    }
+
+    .filters legend {
+      font-size: 0.8rem;
+      padding: 0 0.45rem;
+      color: var(--color-text-muted);
+    }
+
+    .filters label {
+      display: block;
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
+      color: var(--color-text-muted);
+    }
+
+    .filters input[type="checkbox"],
+    .filters input[type="radio"] {
+      margin-right: 0.4rem;
+      accent-color: #22d3ee;
+    }
+
+    .filters-note {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Packages grid */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tour-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg-elevated);
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition-base);
+    }
+
+    .tour-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.95);
+      border-color: rgba(37, 99, 235, 0.9);
+    }
+
+    .tour-image-wrapper {
+      overflow: hidden;
+      max-height: 180px;
+    }
+
+    .tour-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 0.45s ease;
+    }
+
+    .tour-card:hover .tour-image {
+      transform: scale(1.07);
+    }
+
+    .tour-body {
+      padding: 0.9rem 1rem 0.5rem;
+    }
+
+    .tour-location {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .tour-highlights {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    .tour-highlights li::before {
+      content: "▹ ";
+      color: var(--color-accent);
+    }
+
+    .tour-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1rem 0.9rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.8);
+      font-size: 0.85rem;
+    }
+
+    .tour-price {
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+
+    /* Itinerary */
+    .section-itineraries {
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4));
+    }
+
+    .itinerary {
+      background: var(--color-bg-elevated);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+    }
+
+    .itinerary-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: day-counter;
+    }
+
+    .itinerary-list li {
+      position: relative;
+      padding-left: 2.75rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .itinerary-list li::before {
+      counter-increment: day-counter;
+      content: counter(day-counter);
+      position: absolute;
+      top: 0.15rem;
+      left: 0;
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #22d3ee, #a855f7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #020617;
+    }
+
+    .itinerary-list h3 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .itinerary-list p {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Reviews */
+    .section-reviews {
+      background: var(--color-bg);
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: var(--color-bg-elevated);
+      border-radius: 1rem;
+      padding: 1.25rem 1.25rem 1rem;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition-base);
+    }
+
+    .review-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.95);
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .review-avatar {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 2px solid rgba(34, 211, 238, 0.8);
+    }
+
+    .review-name {
+      font-size: 0.95rem;
+    }
+
+    .review-trip {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    .review-text {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .review-rating {
+      font-size: 0.9rem;
+      color: #facc15;
+    }
+
+    /* About */
+    .section-about {
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.2), rgba(2, 6, 23, 0.9));
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.2fr);
+      gap: 2.5rem;
+    }
+
+    .about-list {
+      list-style: disc;
+      padding-left: 1.3rem;
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .about-highlight {
+      background: var(--color-bg-elevated);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      border-radius: var(--radius-lg);
+      padding: 1.3rem 1.4rem;
+      font-size: 0.85rem;
+    }
+
+    .about-highlight h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .about-highlight ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .about-highlight li {
+      margin-bottom: 0.5rem;
+      color: var(--color-text-muted);
+    }
+
+    .about-highlight li::before {
+      content: "◆ ";
+      color: var(--color-accent);
+    }
+
+    /* Inquiry / Contact */
+    .section-inquiry {
+      background: var(--color-bg);
+    }
+
+    .inquiry-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+      gap: 2.5rem;
+    }
+
+    .inquiry-form {
+      background: var(--color-bg-elevated);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.5rem 1.75rem;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-field {
+      flex: 1 1 min(260px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+    }
+
+    .form-field label {
+      color: var(--color-text-muted);
+    }
+
+    input,
+    textarea {
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.65rem 0.75rem;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--color-text);
+      outline: none;
+      transition: var(--transition-base);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #6b7280;
+    }
+
+    input:focus-visible,
+    textarea:focus-visible {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .form-field-inline {
+      margin-bottom: 1rem;
+    }
+
+    .form-field-inline label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .form-field-inline input[type="checkbox"] {
+      width: auto;
+    }
+
+    .contact-info {
+      font-size: 0.85rem;
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.75rem;
+    }
+
+    .contact-list li {
+      margin-bottom: 0.4rem;
+    }
+
+    .contact-note {
+      color: var(--color-text-muted);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid rgba(15, 23, 42, 0.95);
+      background: rgba(2, 6, 23, 0.98);
+      padding: 1.4rem 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    .footer-nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.25rem;
+      padding: 0;
+      margin: 0;
+      font-size: 0.78rem;
+    }
+
+    .footer-nav a {
+      color: var(--color-text-muted);
+    }
+
+    .footer-nav a:hover,
+    .footer-nav a:focus-visible {
+      color: var(--color-text);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      transition: var(--transition-base);
+    }
+
+    .social-link:hover,
+    .social-link:focus-visible {
+      border-color: var(--color-accent);
+      background: rgba(15, 23, 42, 0.99);
+      transform: translateY(-1px);
+    }
+
+    .icon {
+      width: 1rem;
+      height: 1rem;
+      stroke: var(--color-text-muted);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    /* Animation */
+    @keyframes heroFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive: Tablet and below */
+    @media (max-width: 1024px) {
+      .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        gap: 2rem;
+      }
+
+      .packages-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .filters {
+        order: -1;
+      }
+
+      .about-grid {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      }
+
+      .inquiry-grid {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+      }
+    }
+
+    /* Responsive: <= 768px – stack most layouts, single-column grids */
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .main-nav .nav-list {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding-top: 2.5rem;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-highlight {
+        order: -1;
+      }
+
+      .hero-actions {
+        justify-content: flex-start;
+      }
+
+      .hero-stats {
+        gap: 0.75rem;
+      }
+
+      .packages-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid,
+      .inquiry-grid,
+      .reviews-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-nav ul {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Responsive: small mobile <= 600px */
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      .section {
+        padding: 2.5rem 0;
+      }
+
+      .section-header {
+        margin-bottom: 1.6rem;
+      }
+
+      .hero-title {
+        font-size: 2.1rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      .hero-stats li {
+        flex: 1 1 calc(50% - 0.75rem);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="NovaVoyage home">
+        <span class="brand-logo">NV</span>
+        <span class="brand-text">
+          <span class="brand-name">NovaVoyage by Virat</span>
+          <span class="brand-tagline">Future of Exploration</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#packages">Tours</a></li>
+          <li><a href="#itineraries">Itineraries</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#inquiry">Contact</a></li>
+        </ul>
+      </nav>
+
+      <a href="#inquiry" class="btn btn-primary btn-small">Plan a Trip</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero / Banner -->
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+
+      <!-- Background Video (no JS) -->
+      <div class="hero-video-wrapper" aria-hidden="true">
+        <video autoplay muted loop playsinline>
+          <!-- 🔁 Change this path to your actual video -->
+          <source src="C:\Users\virat\Downloads\From KlickPin CF Video social media for Al Roqi for Tourism in 2025 _ Travel destinations photography Travel video ideas Wow travel.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <h1 id="hero-title" class="hero-title">
+            Travel the future, <span class="accent">today.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Curated, data-driven itineraries to the world’s most iconic cities, designed for modern travelers who want
+            more than just a vacation.
+          </p>
+          <div class="hero-actions">
+            <a href="#packages" class="btn btn-primary">View Tour Packages</a>
+            <a href="#itineraries" class="btn btn-ghost">Explore Itineraries</a>
+          </div>
+
+          <ul class="hero-stats" aria-label="Company statistics">
+            <li>
+              <span class="stat-number">150+</span>
+              <span class="stat-label">Curated Routes</span>
+            </li>
+            <li>
+              <span class="stat-number">4.9★</span>
+              <span class="stat-label">Average Rating</span>
+            </li>
+            <li>
+              <span class="stat-number">25K</span>
+              <span class="stat-label">Happy Travelers</span>
+            </li>
+          </ul>
+        </div>
+
+        <aside class="hero-highlight" aria-label="Featured destination">
+          <article class="destination-card">
+            <div class="destination-image-wrapper">
+              <img
+                src="C:\Users\virat\Downloads\'Tokyo by night' Poster, picture, metal print, paint by Nicolas Wauters _ Displate.jpg"
+                alt="Neon-lit streets of Tokyo at night" class="destination-image" />
+              <span class="destination-badge">Trending · 2025</span>
+            </div>
+            <div class="destination-info">
+              <h2 class="destination-title">Neo Tokyo Nights</h2>
+              <p class="destination-meta">7-day tech-city escape · From $1,899</p>
+              <ul class="destination-features">
+                <li>AI-guided city tours</li>
+                <li>Private skydeck experience</li>
+                <li>Hidden ramen alleys</li>
+              </ul>
+            </div>
+          </article>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Packages Section with Filters & Grid -->
+    <section id="packages" class="section section-packages" aria-labelledby="packages-title">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="packages-title">Featured Tour Packages</h2>
+          <p>Hand-picked, tech-enhanced experiences across the globe.</p>
+        </header>
+
+        <div class="packages-layout">
+          <!-- Sidebar / Filters (visual only) -->
+          <aside class="filters" aria-label="Filter tours (visual only)">
+            <h3 class="filters-title">Refine Results</h3>
+
+            <form class="filters-form">
+              <fieldset>
+                <legend>Trip Length</legend>
+                <label>
+                  <input type="radio" name="length" />
+                  Weekend (2–3 days)
+                </label>
+                <label>
+                  <input type="radio" name="length" />
+                  Short (4–6 days)
+                </label>
+                <label>
+                  <input type="radio" name="length" />
+                  Extended (7+ days)
+                </label>
+              </fieldset>
+
+              <fieldset>
+                <legend>Experience Type</legend>
+                <label>
+                  <input type="checkbox" />
+                  Adventure
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  Luxury
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  Culture
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  Nightlife
+                </label>
+              </fieldset>
+
+              <fieldset>
+                <legend>Budget</legend>
+                <label>
+                  <input type="radio" name="budget" />
+                  &lt; $1,000
+                </label>
+                <label>
+                  <input type="radio" name="budget" />
+                  $1,000 – $2,500
+                </label>
+                <label>
+                  <input type="radio" name="budget" />
+                  $2,500+
+                </label>
+              </fieldset>
+
+              <p class="filters-note">
+                Filters are visual only for this demo. No JavaScript applied.
+              </p>
+            </form>
+          </aside>
+
+          <!-- Packages grid -->
+          <div class="packages-grid">
+            <article class="tour-card">
+              <div class="tour-image-wrapper">
+                <img src="C:\Users\virat\Downloads\The Northern Lights_ A Must-See in Your Lifetime.jpg"
+                  alt="Northern lights glowing above snowy mountains in Iceland" class="tour-image" />
+              </div>
+              <div class="tour-body">
+                <h3>Arctic Aurora Circuit</h3>
+                <p class="tour-location">Reykjavík · Iceland</p>
+                <ul class="tour-highlights">
+                  <li>Glacier lagoon boat ride</li>
+                  <li>Nightly aurora-watch sessions</li>
+                  <li>Geothermal spa access</li>
+                </ul>
+              </div>
+              <footer class="tour-footer">
+                <span class="tour-price">From $2,499</span>
+                <a href="#inquiry" class="btn btn-outline">Inquire</a>
+              </footer>
+            </article>
+
+            <article class="tour-card">
+              <div class="tour-image-wrapper">
+                <img src="C:\Users\virat\Downloads\download.jpg" alt="Lush green rice terraces and villas in Bali"
+                  class="tour-image" />
+              </div>
+              <div class="tour-body">
+                <h3>Bali Zen Retreat</h3>
+                <p class="tour-location">Ubud · Indonesia</p>
+                <ul class="tour-highlights">
+                  <li>Sunrise temple visit</li>
+                  <li>Private wellness sessions</li>
+                  <li>Chef-curated local cuisine</li>
+                </ul>
+              </div>
+              <footer class="tour-footer">
+                <span class="tour-price">From $1,299</span>
+                <a href="#inquiry" class="btn btn-outline">Inquire</a>
+              </footer>
+            </article>
+
+            <article class="tour-card">
+              <div class="tour-image-wrapper">
+                <img src="C:\Users\virat\Downloads\Burj Khalifa - Dubai, UAE.jpg "
+                  alt="Futuristic skyline of Dubai at twilight" class="tour-image" />
+              </div>
+              <div class="tour-body">
+                <h3>Dubai Skyline Sojourn</h3>
+                <p class="tour-location">Dubai · UAE</p>
+                <ul class="tour-highlights">
+                  <li>VIP desert safari</li>
+                  <li>Skyline helicopter ride</li>
+                  <li>Exclusive rooftop dinners</li>
+                </ul>
+              </div>
+              <footer class="tour-footer">
+                <span class="tour-price">From $1,899</span>
+                <a href="#inquiry" class="btn btn-outline">Inquire</a>
+              </footer>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Itinerary Section -->
+    <section id="itineraries" class="section section-itineraries" aria-labelledby="itineraries-title">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="itineraries-title">Sample Itinerary · Neo Tokyo Nights (7 Days)</h2>
+          <p>A snapshot of how we design high-tech, high-comfort journeys.</p>
+        </header>
+
+        <article class="itinerary">
+          <ol class="itinerary-list">
+            <li>
+              <h3>Day 1 · Arrival & Skyline Welcome</h3>
+              <p>Touch down at Haneda, private transfer to Shinjuku. Evening welcome dinner overlooking the neon
+                cityscape.</p>
+            </li>
+            <li>
+              <h3>Day 2 · Urban Explorer Mode</h3>
+              <p>AI-guided walking tour through Shibuya Crossing, Harajuku, and Omotesando with live recommendations
+                pushed to your phone.</p>
+            </li>
+            <li>
+              <h3>Day 3 · Future Labs & Tech Museums</h3>
+              <p>Guided visit to teamLabs, Miraikan, and robotics labs. Optional VR arcade night experience.</p>
+            </li>
+            <li>
+              <h3>Day 4 · Hidden Tokyo Food Hunt</h3>
+              <p>Ramen alley crawl, local izakayas, and dessert bars curated by our culinary AI engine.</p>
+            </li>
+            <li>
+              <h3>Day 5 · Day Trip to Mt. Fuji</h3>
+              <p>Scenic train ride, lakeside viewpoints, and onsen soak with Fuji views.</p>
+            </li>
+            <li>
+              <h3>Day 6 · Free Roam & Shopping</h3>
+              <p>Personal recommendations based on your travel profile. High-tech shopping districts and cafés.</p>
+            </li>
+            <li>
+              <h3>Day 7 · Farewell & Departure</h3>
+              <p>Easy airport transfer with digital trip recap and photo album delivered to your inbox.</p>
+            </li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <!-- Reviews / Testimonials -->
+    <section id="reviews" class="section section-reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="reviews-title">Traveler Stories</h2>
+          <p>What our community of explorers say about NovaVoyage.</p>
+        </header>
+
+        <div class="reviews-grid">
+          <article class="review-card">
+            <header class="review-header">
+              <img src="C:\Users\virat\OneDrive\Desktop\VIRAT.jpg" alt="Portrait of traveler Virat"
+                class="review-avatar" />
+              <div>
+                <h3 class="review-name">Virat Singh</h3>
+                <p class="review-trip">Neo Tokyo Nights · 2025</p>
+              </div>
+            </header>
+            <p class="review-text">
+              “It felt like traveling with a smart assistant in my pocket. Every recommendation was on point, from food
+              to hidden streets.”
+            </p>
+            <p class="review-rating">★★★★★</p>
+          </article>
+
+          <article class="review-card">
+            <header class="review-header">
+              <img
+                src="C:\Users\virat\Downloads\Portrait of a confident young smart looking man _ Premium AI-generated image.jpg"
+                alt="Portrait of traveler Daniel" class="review-avatar" />
+              <div>
+                <h3 class="review-name">Daniel Lee</h3>
+                <p class="review-trip">Arctic Aurora Circuit · 2024</p>
+              </div>
+            </header>
+            <p class="review-text">
+              “The balance between adventure and comfort was perfect. The trip dashboard kept everything organized and
+              calm.”
+            </p>
+            <p class="review-rating">★★★★★</p>
+          </article>
+
+          <article class="review-card">
+            <header class="review-header">
+              <img src="C:\Users\virat\Downloads\download (1).jpg" alt="Portrait of traveler Priya"
+                class="review-avatar" />
+              <div>
+                <h3 class="review-name">Priya Patel</h3>
+                <p class="review-trip">Bali Zen Retreat · 2025</p>
+              </div>
+            </header>
+            <p class="review-text">
+              “Loved the curated wellness sessions and the way they wove in local culture. Everything felt intentional
+              and seamless.”
+            </p>
+            <p class="review-rating">★★★★★</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section section-about" aria-labelledby="about-title">
+      <div class="container about-grid">
+        <article>
+          <h2 id="about-title">Why NovaVoyage?</h2>
+          <p>
+            We blend human travel expertise with modern data and design to craft trips that feel personal, effortless,
+            and unforgettable.
+          </p>
+          <ul class="about-list">
+            <li>Smart itineraries optimized for time, budget, and energy.</li>
+            <li>Partners vetted for safety, comfort, and sustainability.</li>
+            <li>Concierge support before, during, and after your trip.</li>
+          </ul>
+        </article>
+
+        <aside class="about-highlight" aria-label="Fast facts">
+          <h3>Fast Facts</h3>
+          <ul>
+            <li>Operating across 30+ countries</li>
+            <li>24/7 support with real humans</li>
+            <li>Carbon-conscious route planning</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Inquiry / Contact Form -->
+    <section id="inquiry" class="section section-inquiry" aria-labelledby="inquiry-title">
+      <div class="container inquiry-grid">
+        <article>
+          <header class="section-header">
+            <h2 id="inquiry-title">Plan Your Next Journey</h2>
+            <p>Tell us a bit about your dream trip, and we’ll craft a custom itinerary.</p>
+          </header>
+
+          <form class="inquiry-form" action="#" method="post" novalidate>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name" />
+              </div>
+              <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="you@example.com" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="destination">Preferred Destination</label>
+                <input type="text" id="destination" name="destination" placeholder="e.g., Tokyo, Bali, Iceland" />
+              </div>
+              <div class="form-field">
+                <label for="travel-dates">Approx. Dates</label>
+                <input type="text" id="travel-dates" name="travel-dates" placeholder="e.g., March 2026" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="travelers">Number of Travelers</label>
+                <input type="number" id="travelers" name="travelers" min="1" max="20" placeholder="2" required />
+              </div>
+              <div class="form-field">
+                <label for="budget">Budget (USD)</label>
+                <input type="text" id="budget" name="budget" placeholder="e.g., 2000–3000" />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="message">Tell us about your ideal trip</label>
+              <textarea id="message" name="message" rows="4"
+                placeholder="What kind of experiences are you looking for?"></textarea>
+            </div>
+
+            <div class="form-field form-field-inline">
+              <label>
+                <input type="checkbox" name="newsletter" />
+                Keep me updated with future-ready travel deals.
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              Submit Inquiry
+            </button>
+          </form>
+        </article>
+
+        <aside class="contact-info" aria-label="Contact information">
+          <h3>Contact & Support</h3>
+          <p>Prefer to talk to a human? We’re here for you.</p>
+          <ul class="contact-list">
+            <li><strong>Email:</strong> hello@novavoyage.travel</li>
+            <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+            <li><strong>HQ:</strong> 42 Orbit Lane, Cloud City</li>
+          </ul>
+
+          <p class="contact-note">
+            Response time for new trip inquiries: usually within 24 hours.
+          </p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-logo">NV</span>
+        <span class="footer-copy">
+          © 2025 NovaVoyage Travel Co.
+        </span>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#packages">Tours</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#inquiry">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-social" aria-label="Social media">
+        <!-- Simple SVG icon placeholders -->
+        <a href="#" aria-label="Visit NovaVoyage on Instagram" class="social-link">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+            <circle cx="12" cy="12" r="3.5"></circle>
+            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+            <circle cx="17" cy="7" r="1.2"></circle>
+          </svg>
+        </a>
+        <a href="#" aria-label="Visit NovaVoyage on X" class="social-link">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+            <path d="M5 5l14 14m0-14L5 19"></path>
+          </svg>
+        </a>
+        <a href="#" aria-label="Visit NovaVoyage on LinkedIn" class="social-link">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+            <rect x="4" y="9" width="3" height="11"></rect>
+            <circle cx="5.5" cy="6" r="1.5"></circle>
+            <rect x="10" y="9" width="10" height="11"></rect>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
+
